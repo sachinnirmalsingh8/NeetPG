@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NEET PG">
+<meta name="theme-color" content="#1B4332">
+<title>NEET PG Study Tracker</title>
+<style>
+:root {
+  --bg: #F5F1EB;
+  --card: #FFFFFF;
+  --card-border: rgba(0,0,0,0.06);
+  --text: #141210;
+  --text-secondary: #7A7167;
+  --accent: #1B4332;
+  --accent-mid: #2D6A4F;
+  --accent-light: #D8F3DC;
+  --accent-glow: #40916C;
+  --warm: #D4A373;
+  --warm-deep: #BC6C25;
+  --warm-light: #FEFAE0;
+  --red: #BC4749;
+  --red-light: #FBE5E5;
+  --purple: #6C567B;
+  --blue: #3A6EA5;
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-body: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow: 0 4px 16px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:100px;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.app-header{background:linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);color:white;padding:24px 20px 28px;padding-top:calc(24px + env(safe-area-inset-top));position:relative;overflow:hidden}
+.app-header::before{content:'';position:absolute;top:-40%;right:-20%;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.03)}
+.app-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--warm),var(--accent-glow),var(--warm))}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.app-title{font-family:var(--font-display);font-size:1.6rem;letter-spacing:-0.5px;font-weight:400}
+.app-title span{color:var(--warm);font-weight:700}
+.header-date{font-size:0.7rem;opacity:0.7;letter-spacing:1px;text-transform:uppercase}
+.header-subtitle{font-size:0.88rem;opacity:0.9;font-weight:300;letter-spacing:0.2px}
+.notif-toggle{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);color:white;padding:6px 12px;border-radius:20px;font-size:0.7rem;cursor:pointer;font-family:var(--font-body);font-weight:500;letter-spacing:0.3px;transition:all 0.2s;margin-top:10px;display:inline-flex;align-items:center;gap:6px}
+.notif-toggle:hover{background:rgba(255,255,255,0.25)}
+.notif-toggle .notif-dot{width:6px;height:6px;border-radius:50%;background:#EF4444;animation:pulse-dot 2s infinite}
+.notif-toggle .notif-dot.on{background:#34D399;animation:none}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 16px;margin-top:-16px}
+.stat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px 8px;text-align:center;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card:nth-child(1)::after{background:var(--accent)}
+.stat-card:nth-child(2)::after{background:var(--warm)}
+.stat-card:nth-child(3)::after{background:var(--purple)}
+.stat-card:nth-child(4)::after{background:var(--blue)}
+.stat-value{font-family:var(--font-display);font-size:1.5rem;color:var(--text);line-height:1.1}
+.stat-label{font-size:0.6rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.8px;margin-top:4px;font-weight:500}
+
+/* NAV */
+.nav-tabs{display:flex;gap:0;padding:0 16px;border-bottom:1px solid var(--card-border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.nav-tab{flex:1;padding:14px 4px;text-align:center;font-size:0.72rem;font-weight:600;color:var(--text-secondary);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;text-transform:uppercase}
+.nav-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+.tab-content{display:none;padding:16px}
+.tab-content.active{display:block;animation:fadeUp 0.3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* TODAY */
+.today-hero{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);border-radius:var(--radius);padding:22px 20px;margin-bottom:16px;box-shadow:var(--shadow);color:white;position:relative;overflow:hidden}
+.today-hero::before{content:'';position:absolute;top:-30%;right:-15%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.today-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:1.5px;opacity:0.7;margin-bottom:6px}
+.today-subject-name{font-family:var(--font-display);font-size:1.8rem;font-weight:400;letter-spacing:-0.5px}
+.today-day-badge{display:inline-block;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);color:white;font-size:0.7rem;font-weight:500;padding:4px 12px;border-radius:20px;margin-top:8px;letter-spacing:0.3px}
+
+/* CURRENT BLOCK INDICATOR */
+.current-block-banner{background:var(--warm-light);border:1.5px solid var(--warm);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:0.82rem;font-weight:500;color:var(--warm-deep)}
+.current-block-banner .live-dot{width:8px;height:8px;border-radius:50%;background:var(--warm-deep);animation:pulse-dot 1.5s infinite;flex-shrink:0}
+
+/* BLOCKS */
+.block-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm);transition:all 0.25s}
+.block-card:hover{box-shadow:var(--shadow)}
+.block-card.completed{opacity:0.55}
+.block-card.completed .block-header-bar{background:var(--accent-light)}
+.block-card.is-current{border-color:var(--warm);box-shadow:0 0 0 2px rgba(212,163,115,0.2),var(--shadow)}
+.block-header-bar{height:4px;transition:background 0.2s}
+.block-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;user-select:none}
+.block-left{flex:1}
+.block-name{font-weight:600;font-size:0.88rem;display:flex;align-items:center;gap:8px;letter-spacing:-0.2px}
+.block-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;color:white}
+.block-time{font-size:0.7rem;color:var(--text-secondary);margin-top:3px;margin-left:36px;font-weight:400}
+.block-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--card-border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;background:white;font-size:0.7rem}
+.block-check.checked{background:var(--accent);border-color:var(--accent);color:white}
+.block-body{padding:0 16px 14px 52px;display:none}
+.block-card.expanded .block-body{display:block}
+.block-task{font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:3px;padding-left:14px;position:relative}
+.block-task::before{content:'';position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:var(--card-border)}
+
+/* TIMER */
+.timer-wrap{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:24px 20px;text-align:center;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.timer-ring{width:160px;height:160px;margin:0 auto 12px;position:relative}
+.timer-ring svg{transform:rotate(-90deg)}
+.timer-ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.timer-ring .ring-bg{stroke:var(--card-border)}
+.timer-ring .ring-fg{stroke:var(--accent);transition:stroke-dashoffset 1s linear}
+.timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-display{font-family:var(--font-display);font-size:2.6rem;color:var(--text);letter-spacing:1px;line-height:1}
+.timer-sub{font-size:0.68rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.timer-btns{display:flex;gap:8px;justify-content:center;margin-top:4px}
+.btn-timer{padding:10px 28px;border:2px solid var(--accent);border-radius:var(--radius-sm);background:white;color:var(--accent);font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.15s;font-family:var(--font-body);letter-spacing:0.3px}
+.btn-timer.active-timer{background:var(--accent);color:white}
+.btn-timer:active{transform:scale(0.95)}
+
+/* MCQ */
+.mcq-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.mcq-section-title{font-family:var(--font-display);font-size:1.1rem;margin-bottom:14px;color:var(--text)}
+.input-row{display:flex;gap:10px;margin-bottom:10px}
+.input-group{flex:1;display:flex;flex-direction:column}
+.input-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-secondary);margin-bottom:5px;font-weight:500}
+.input-field{width:100%;padding:11px 14px;border:1.5px solid rgba(0,0,0,0.08);border-radius:var(--radius-sm);font-size:0.88rem;font-family:var(--font-body);background:var(--bg);color:var(--text);outline:none;transition:all 0.2s}
+.input-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,67,50,0.08)}
+.btn{padding:11px 20px;border:none;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:var(--font-body);letter-spacing:0.3px}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-mid));color:white;width:100%;box-shadow:0 2px 8px rgba(27,67,50,0.2)}
+.btn-primary:active{transform:scale(0.97)}
+.btn-outline{background:white;color:var(--accent);border:1.5px solid var(--accent);width:100%}
+.btn-outline:active{transform:scale(0.97)}
+.btn-sm{padding:7px 14px;font-size:0.72rem;width:auto}
+
+.mcq-entry{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:0.82rem}
+.mcq-entry:last-child{border-bottom:none}
+.mcq-score{font-weight:700;color:var(--accent);font-family:var(--font-display);font-size:0.9rem}
+.mcq-score.low{color:var(--red)}
+.mcq-pct-bar{height:3px;border-radius:2px;background:var(--card-border);margin-top:4px;overflow:hidden}
+.mcq-pct-fill{height:100%;border-radius:2px;background:var(--accent);transition:width 0.3s}
+
+/* CALENDAR */
+.cal-day{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm);transition:all 0.15s}
+.cal-day.today-cal{border-left:4px solid var(--accent);box-shadow:var(--shadow)}
+.cal-day.past .cal-day-header{opacity:0.45}
+.cal-day-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer}
+.cal-day-num{font-family:var(--font-display);font-size:1.05rem}
+.cal-day-date{font-size:0.68rem;color:var(--text-secondary);margin-top:1px}
+.cal-subject-badge{padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:600}
+.cal-day-detail{padding:0 16px 14px;display:none;font-size:0.78rem;color:var(--text-secondary);line-height:1.6}
+.cal-day.expanded .cal-day-detail{display:block}
+.cal-progress{display:flex;gap:4px;padding:0 16px 10px}
+.cal-block-dot{width:8px;height:8px;border-radius:50%;background:var(--card-border)}
+.cal-block-dot.done-dot{background:var(--accent)}
+.cal-actions{display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap}
+
+/* NOTES */
+.wrong-entry{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:8px;font-size:0.82rem;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;box-shadow:var(--shadow-sm)}
+.wrong-text{flex:1;line-height:1.5}
+.wrong-subj{font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--warm-deep);white-space:nowrap}
+.wrong-delete{color:var(--red);background:none;border:none;cursor:pointer;font-size:1.1rem;padding:0 4px;opacity:0.6;transition:opacity 0.2s}
+.wrong-delete:hover{opacity:1}
+textarea.input-field{min-height:60px;resize:vertical}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary);font-size:0.85rem}
+.section-title{font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:10px;padding-left:2px;font-weight:500}
+
+/* MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-sheet{background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;padding:20px 20px 36px;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1)}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-handle{width:36px;height:4px;background:rgba(0,0,0,0.12);border-radius:4px;margin:0 auto 16px}
+.modal-title{font-family:var(--font-display);font-size:1.2rem;margin-bottom:16px}
+.modal-form-group{margin-bottom:14px}
+.modal-form-group label{display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-secondary);margin-bottom:5px;font-weight:500}
+.task-edit-row{display:flex;gap:8px;margin-bottom:6px;align-items:center}
+.task-edit-row input{flex:1}
+.task-remove-btn{background:none;border:none;color:var(--red);font-size:1.2rem;cursor:pointer;padding:4px 8px;flex-shrink:0;opacity:0.6}
+.task-remove-btn:hover{opacity:1}
+.add-task-btn{background:none;border:1.5px dashed rgba(0,0,0,0.1);border-radius:var(--radius-sm);padding:10px;width:100%;color:var(--text-secondary);font-size:0.78rem;cursor:pointer;margin-top:4px;transition:all 0.2s}
+.add-task-btn:hover{border-color:var(--accent);color:var(--accent)}
+.modal-btns{display:flex;gap:10px;margin-top:20px}
+.modal-btns .btn{flex:1}
+.color-picker{display:flex;gap:8px;flex-wrap:wrap}
+.color-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all 0.15s}
+.color-dot.selected{border-color:var(--text);transform:scale(1.2)}
+
+/* NOTIF SETTINGS CARD */
+.notif-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.notif-status{display:flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:500}
+.notif-status-dot{width:8px;height:8px;border-radius:50%}
+
+@media print{
+  body{background:white}
+  .nav-tabs,.btn,.block-check,.timer-wrap,.cal-actions,.modal-overlay,.notif-toggle,.notif-card,.current-block-banner{display:none}
+  .tab-content{display:block!important}
+  .block-body{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-top">
+    <div class="app-title">NEET<span>PG</span></div>
+    <div class="header-date" id="headerDate"></div>
+  </div>
+  <div class="header-subtitle" id="headerSubtitle">Loading...</div>
+  <button class="notif-toggle" id="notifToggle" onclick="toggleNotifications()">
+    <span class="notif-dot" id="notifDot"></span>
+    <span id="notifLabel">Enable Reminders</span>
+  </button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card"><div class="stat-value" id="statDay">-</div><div class="stat-label">Day</div></div>
+  <div class="stat-card"><div class="stat-value" id="statBlocks">0/4</div><div class="stat-label">Blocks</div></div>
+  <div class="stat-card"><div class="stat-value" id="statMcq">0</div><div class="stat-label">MCQs</div></div>
+  <div class="stat-card"><div class="stat-value" id="statStreak">0</div><div class="stat-label">Streak</div></div>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" data-tab="today">Today</button>
+  <button class="nav-tab" data-tab="mcq">MCQ</button>
+  <button class="nav-tab" data-tab="calendar">Calendar</button>
+  <button class="nav-tab" data-tab="notes">Notes</button>
+</div>
+
+<div class="tab-content active" id="tab-today"></div>
+<div class="tab-content" id="tab-mcq"></div>
+<div class="tab-content" id="tab-calendar"></div>
+<div class="tab-content" id="tab-notes"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-sheet" id="modalSheet"></div>
+</div>
+
+<script>
+const DEFAULT_SCHEDULE=[
+  {day:1,date:'2026-06-01',subject:'Anatomy',color:'#1B4332',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['Upper limb, lower limb clinical correlates','Brachial plexus injuries, nerve lesions, dermatomes','Embryology — germ layers, pharyngeal arches, congenital anomalies']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 Anatomy MCQs (timed, 75 min)','3:30–4:45 → 50 mixed-subject MCQs (75 min)','4:45–5:45 → Review wrong answers, write one-liners']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Neuroanatomy — cranial nerves, blood supply of brain','Brown-Sequard, UMN vs LMN lesions','Cross-sectional anatomy images']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers from Block B','Preview Physiology for tomorrow']}]},
+  {day:2,date:'2026-06-02',subject:'Physiology',color:'#5A4B8A',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['CVS — cardiac cycle, PV loops, Wiggers diagram','Renal — GFR, clearance, acid-base, counter-current']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 Physiology MCQs (timed)','3:30–4:45 → 50 mixed-subject MCQs','4:45–5:45 → Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Neuro — synaptic transmission, EEG, sleep, pain','GI — bile salts, pancreatic secretion, gastric acid','Memorize normal lab values']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Biochemistry']}]},
+  {day:3,date:'2026-06-03',subject:'Biochemistry',color:'#8A6B3D',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['Glycolysis, TCA, ETC — rate-limiting enzymes','Amino acid metabolism — PKU, maple syrup, homocystinuria','Lipid metabolism — beta-oxidation, ketogenesis']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 Biochemistry MCQs (timed)','3:30–4:45 → 50 mixed-subject MCQs','4:45–5:45 → Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Storage disorders — Gaucher, Niemann-Pick, Tay-Sachs','Vitamins — deficiency diseases, coenzyme forms','Molecular biology — DNA repair, PCR, blotting']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Psychiatry']}]},
+  {day:4,date:'2026-06-04',subject:'Psychiatry',color:'#6C567B',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['Schizophrenia — Schneider criteria, subtypes','Mood disorders — bipolar, lithium monitoring','Anxiety spectrum, ICD-11 vs DSM-5']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 Psychiatry MCQs (timed)','3:30–4:45 → 50 mixed-subject MCQs','4:45–5:45 → Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Psychopharmacology — SSRIs, SNRIs, antipsychotics','Side effects — NMS, serotonin syndrome','Child psychiatry, substance use, psychotherapy types']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Surgery']}]},
+  {day:5,date:'2026-06-05',subject:'Surgery',color:'#BC4749',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['GI — appendicitis, intestinal obstruction, CRC staging','Hernias — inguinal, femoral, incisional','Surgical instruments with images']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 Surgery MCQs (timed)','3:30–4:45 → 50 mixed-subject MCQs','4:45–5:45 → Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Breast — BIRADS, staging, surgical options','Thyroid — FNAC, Bethesda, thyroidectomy','Urology — BPH, RCC. Trauma — ATLS']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview OBG']}]},
+  {day:6,date:'2026-06-06',subject:'OBG',color:'#D4A373',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['Partograph reading, stages of labor, PPH','Pre-eclampsia/eclampsia protocol','High-risk: GDM, Rh incompatibility, IUGR']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 OBG MCQs (timed)','3:30–4:45 → 50 mixed-subject MCQs','4:45–5:45 → Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Cervical cancer screening — VIA, Pap, HPV','Ovarian tumors, endometriosis, PCOS','Contraception — OCP, IUCD, emergency, sterilization']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview SPM. Prepare for GT tomorrow.']}]},
+  {day:7,date:'2026-06-07',subject:'SPM + Grand Test',color:'#3A6EA5',blocks:[
+    {name:'Block A',time:'8:30 AM – 12:30 PM',label:'Morning — SPM Rapid Revision',tasks:['Biostatistics — sensitivity, specificity, PPV, study designs','National health programs — dates, targets','Epidemiology, demographics, nutrition, sanitation']},
+    {name:'Block B',time:'1:30 – 5:00 PM',label:'Afternoon — GRAND TEST',tasks:['Full GT — 200 MCQs, 3.5 hrs, strict time','No phone. Simulate real exam conditions.']},
+    {name:'Block C',time:'5:30 – 9:30 PM',label:'Evening — GT Answer Review',tasks:['Go through every wrong answer','Tag weak subjects for buffer day']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['List weakest 2-3 subjects for buffer day']}]},
+  {day:8,date:'2026-06-08',subject:'Buffer Day',color:'#6B6358',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Weakest Subject #1',tasks:['Targeted revision of topics you got wrong in GT','Focus on the single weakest subject']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 MCQs from weak subjects (timed)','50 mixed-subject MCQs','Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Subjects #2-3',tasks:['Second and third weakest subjects','Image-heavy practice if visual Qs are weak']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Final Consolidation',tasks:['"Top 10 facts I keep forgetting"','Pin it somewhere visible']}]}
+];
+
+const COLORS=['#1B4332','#5A4B8A','#8A6B3D','#6C567B','#BC4749','#D4A373','#3A6EA5','#6B6358','#4A7B6F','#8B5E3C'];
+const BLOCK_ICONS=['A','B','C','D'];
+const BLOCK_COLORS=['#1B4332','#D4A373','#6C567B','#3A6EA5'];
+
+function getState(){try{return JSON.parse(localStorage.getItem('neetpg_v3')||'{}')}catch{return {}}}
+function saveState(s){localStorage.setItem('neetpg_v3',JSON.stringify(s))}
+function getSchedule(){const s=getState();if(s.schedule&&s.schedule.length>0)return s.schedule;return JSON.parse(JSON.stringify(DEFAULT_SCHEDULE))}
+function saveSchedule(sched){const s=getState();sched.forEach((item,i)=>{item.day=i+1});s.schedule=sched;saveState(s)}
+function getToday(){const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`}
+function formatDate(ds){return new Date(ds+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'})}
+function getDayStatus(d){const s=getState();const b=s[`blocks_${d}`]||{};return Object.values(b).filter(v=>v).length}
+function getStreak(){const sched=getSchedule();let streak=0;const today=new Date();for(let i=0;i<30;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;const sc=sched.find(s=>s.date===ds);if(!sc){if(i===0)continue;else break}if(getDayStatus(ds)>=3)streak++;else if(i>0)break}return streak}
+function getTotalMcqs(){const s=getState();return(s.mcqLogs||[]).reduce((sum,l)=>sum+(l.total||0),0)}
+
+// PARSE TIME from block time string like "9:30 AM – 1:00 PM"
+function parseBlockTime(timeStr){
+  const match=timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if(!match)return null;
+  let h=parseInt(match[1]),m=parseInt(match[2]);
+  const ampm=match[3].toUpperCase();
+  if(ampm==='PM'&&h!==12)h+=12;
+  if(ampm==='AM'&&h===12)h=0;
+  return{h,m};
+}
+
+function getCurrentBlock(){
+  const sched=getSchedule();const td=getToday();
+  const sc=sched.find(s=>s.date===td);if(!sc)return null;
+  const now=new Date();const nowMin=now.getHours()*60+now.getMinutes();
+  for(let i=0;i<sc.blocks.length;i++){
+    const parts=sc.blocks[i].time.split('–').map(s=>s.trim());
+    const start=parseBlockTime(parts[0]);
+    const end=parseBlockTime(parts[1]);
+    if(start&&end){
+      const startMin=start.h*60+start.m;
+      const endMin=end.h*60+end.m;
+      if(nowMin>=startMin&&nowMin<endMin)return{index:i,block:sc.blocks[i],subject:sc.subject};
+    }
+  }
+  return null;
+}
+
+// NOTIFICATIONS
+let notifEnabled=false;
+let notifiedBlocks={};
+
+function updateNotifUI(){
+  const dot=document.getElementById('notifDot');
+  const label=document.getElementById('notifLabel');
+  if(notifEnabled){dot.classList.add('on');label.textContent='Reminders On'}
+  else{dot.classList.remove('on');label.textContent='Enable Reminders'}
+}
+
+function toggleNotifications(){
+  if(!notifEnabled){
+    if(!('Notification' in window)){alert('Browser does not support notifications');return}
+    Notification.requestPermission().then(p=>{
+      if(p==='granted'){notifEnabled=true;updateNotifUI();checkNotifications()}
+      else{alert('Please allow notifications to get study reminders')}
+    });
+  }else{notifEnabled=false;updateNotifUI()}
+}
+
+function sendNotif(title,body){
+  if(!notifEnabled||Notification.permission!=='granted')return;
+  try{new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>'})}catch(e){}
+}
+
+function checkNotifications(){
+  if(!notifEnabled)return;
+  const sched=getSchedule();const td=getToday();
+  const sc=sched.find(s=>s.date===td);if(!sc)return;
+  const now=new Date();const nowMin=now.getHours()*60+now.getMinutes();
+  const todayKey=td;
+
+  sc.blocks.forEach((block,i)=>{
+    const start=parseBlockTime(block.time.split('–')[0].trim());
+    if(!start)return;
+    const startMin=start.h*60+start.m;
+    const key=`${todayKey}_${i}`;
+    // Notify at start time (within 1 min window)
+    if(nowMin>=startMin&&nowMin<=startMin+1&&!notifiedBlocks[key]){
+      notifiedBlocks[key]=true;
+      sendNotif(`${block.name} Starting — ${sc.subject}`,`${block.label}\n${block.time}`);
+    }
+    // 5 min before
+    const preKey=`${todayKey}_pre_${i}`;
+    if(nowMin>=startMin-5&&nowMin<=startMin-4&&!notifiedBlocks[preKey]){
+      notifiedBlocks[preKey]=true;
+      sendNotif(`${block.name} in 5 minutes`,`Get ready — ${block.label}`);
+    }
+  });
+
+  // Routine notifications
+  const routines=[
+    {h:6,m:30,key:'gym',title:'Good Morning!',body:'Time for gym. Get moving!'},
+    {h:8,m:30,key:'bath',title:'Gym Done',body:'Get bath and get ready for clinic.'},
+    {h:13,m:0,key:'lunch',title:'Lunch Time',body:'Take a break. Eat well. Block B starts at 2 PM.'},
+    {h:15,m:15,key:'break',title:'Break Time',body:'15 min break. Walk, snack, reset. Mixed MCQs next.'},
+    {h:21,m:30,key:'dinner',title:'Dinner + Dog Walk',body:'Take your dinner and walk with your dog.'},
+    {h:23,m:45,key:'sleep',title:'15 min to Sleep',body:'Wrap up Block D. Sleep at 12 sharp!'}
+  ];
+  routines.forEach(r=>{
+    const rMin=r.h*60+r.m;
+    const rKey=`${todayKey}_routine_${r.key}`;
+    if(nowMin>=rMin&&nowMin<=rMin+1&&!notifiedBlocks[rKey]){
+      notifiedBlocks[rKey]=true;
+      sendNotif(r.title,r.body);
+    }
+  });
+}
+
+setInterval(checkNotifications,30000);
+
+function updateHeader(){
+  const sched=getSchedule();const td=getToday();
+  document.getElementById('headerDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'});
+  const sc=sched.find(s=>s.date===td);
+  document.getElementById('headerSubtitle').textContent=sc?`Day ${sc.day} · ${sc.subject}`:'Keep revising!';
+}
+function updateStats(){
+  const sched=getSchedule();const td=getToday();const sc=sched.find(s=>s.date===td);
+  document.getElementById('statDay').textContent=sc?sc.day:'-';
+  document.getElementById('statBlocks').textContent=`${sc?getDayStatus(td):0}/4`;
+  document.getElementById('statMcq').textContent=getTotalMcqs();
+  document.getElementById('statStreak').textContent=getStreak();
+}
+
+function openModal(html){document.getElementById('modalSheet').innerHTML='<div class="modal-handle"></div>'+html;document.getElementById('modalOverlay').classList.add('open')}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+let timerInterval=null,timerSeconds=75*60,timerRunning=false,timerTotal=75*60;
+function renderTimer(){
+  const el=document.getElementById('timerDisplay');
+  if(el)el.textContent=`${String(Math.floor(timerSeconds/60)).padStart(2,'0')}:${String(timerSeconds%60).padStart(2,'0')}`;
+  const sub=document.getElementById('timerSub');
+  if(sub)sub.textContent=timerRunning?'Running':'Paused';
+  const circle=document.getElementById('timerCircle');
+  if(circle){const circ=2*Math.PI*72;const progress=(timerSeconds/timerTotal);circle.style.strokeDashoffset=circ*(1-progress)}
+}
+function startTimer(){if(timerRunning)return;timerRunning=true;renderTimer();timerInterval=setInterval(()=>{if(timerSeconds>0){timerSeconds--;renderTimer()}else{clearInterval(timerInterval);timerRunning=false;sendNotif('MCQ Timer Done!','75 minutes complete. Review your answers now.');alert('Time up!')}},1000)}
+function pauseTimer(){clearInterval(timerInterval);timerRunning=false;renderTimer()}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSeconds=75*60;renderTimer()}
+
+function renderToday(){
+  const sched=getSchedule();const td=getToday();
+  const sc=sched.find(s=>s.date===td)||sched[0];
+  const st=getState();const bk=st[`blocks_${sc.date}`]||{};
+  const curBlock=getCurrentBlock();
+  const circ=2*Math.PI*72;
+
+  let h=`
+    <div class="today-hero">
+      <div class="today-label">Today's Focus</div>
+      <div class="today-subject-name">${sc.subject}</div>
+      <div class="today-day-badge">Day ${sc.day} of ${sched.length} · ${formatDate(sc.date)}</div>
+    </div>`;
+
+  if(curBlock){
+    h+=`<div class="current-block-banner"><span class="live-dot"></span>Now: ${curBlock.block.name} — ${curBlock.block.label}</div>`;
+  }
+
+  h+=`<div class="timer-wrap">
+    <div class="timer-ring">
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <circle class="ring-bg" cx="80" cy="80" r="72" />
+        <circle class="ring-fg" id="timerCircle" cx="80" cy="80" r="72" stroke-dasharray="${circ}" stroke-dashoffset="0" />
+      </svg>
+      <div class="timer-center">
+        <div class="timer-display" id="timerDisplay">75:00</div>
+        <div class="timer-sub" id="timerSub">MCQ Timer</div>
+      </div>
+    </div>
+    <div class="timer-btns">
+      <button class="btn-timer active-timer" onclick="startTimer()">Start</button>
+      <button class="btn-timer" onclick="pauseTimer()">Pause</button>
+      <button class="btn-timer" onclick="resetTimer()">Reset</button>
+    </div>
+  </div>`;
+
+  sc.blocks.forEach((block,i)=>{
+    const checked=bk[i]||false;
+    const isCurrent=curBlock&&curBlock.index===i;
+    h+=`<div class="block-card ${checked?'completed':''} ${isCurrent?'is-current':''}" id="block-${i}">
+      <div class="block-header-bar" style="background:${BLOCK_COLORS[i]}"></div>
+      <div class="block-header" onclick="toggleBlock(${i})">
+        <div class="block-left">
+          <div class="block-name">
+            <div class="block-icon" style="background:${BLOCK_COLORS[i]}">${BLOCK_ICONS[i]}</div>
+            ${block.label}
+          </div>
+          <div class="block-time">${block.time}</div>
+        </div>
+        <div class="block-check ${checked?'checked':''}" onclick="event.stopPropagation();checkBlock(${i})">${checked?'✓':''}</div>
+      </div>
+      <div class="block-body">${block.tasks.map(t=>`<div class="block-task">${t}</div>`).join('')}</div>
+    </div>`;
+  });
+  document.getElementById('tab-today').innerHTML=h;
+  renderTimer();
+}
+function toggleBlock(i){document.getElementById(`block-${i}`).classList.toggle('expanded')}
+function checkBlock(i){
+  const sched=getSchedule();const td=getToday();const sc=sched.find(s=>s.date===td)||sched[0];
+  const st=getState();const key=`blocks_${sc.date}`;
+  if(!st[key])st[key]={};st[key][i]=!st[key][i];saveState(st);renderToday();updateStats();
+}
+
+function renderMcq(){
+  const st=getState();const logs=st.mcqLogs||[];
+  const sched=getSchedule();const sc=sched.find(s=>s.date===getToday());
+  const subj=sc?sc.subject:'General';
+  let h=`<div class="mcq-section">
+    <div class="mcq-section-title">Log MCQ Score</div>
+    <div class="input-row"><div class="input-group"><div class="input-label">Type</div>
+      <select class="input-field" id="mcqType"><option value="subject">${subj} (Subject)</option><option value="mixed">Mixed (All 19)</option></select>
+    </div></div>
+    <div class="input-row">
+      <div class="input-group"><div class="input-label">Correct</div><input type="number" class="input-field" id="mcqCorrect" placeholder="0" min="0"></div>
+      <div class="input-group"><div class="input-label">Total</div><input type="number" class="input-field" id="mcqTotal" placeholder="50" value="50" min="1"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveMcq()">Save Score</button>
+  </div>`;
+  if(logs.length>0){
+    h+=`<div class="section-title">Recent Scores</div>`;
+    logs.slice(-20).reverse().forEach(l=>{
+      const pct=Math.round((l.correct/l.total)*100);
+      h+=`<div class="mcq-entry"><div><div style="font-weight:600">${l.type==='subject'?l.subject:'Mixed (All 19)'}</div><div style="font-size:0.68rem;color:var(--text-secondary)">${l.date}</div><div class="mcq-pct-bar"><div class="mcq-pct-fill" style="width:${pct}%;background:${pct<50?'var(--red)':'var(--accent)'}"></div></div></div><div class="mcq-score ${pct<50?'low':''}">${l.correct}/${l.total}<br><span style="font-size:0.7rem">${pct}%</span></div></div>`;
+    });
+  }
+  document.getElementById('tab-mcq').innerHTML=h;
+}
+function saveMcq(){
+  const c=parseInt(document.getElementById('mcqCorrect').value)||0;
+  const t=parseInt(document.getElementById('mcqTotal').value)||50;
+  const type=document.getElementById('mcqType').value;
+  const sched=getSchedule();const sc=sched.find(s=>s.date===getToday());
+  const st=getState();if(!st.mcqLogs)st.mcqLogs=[];
+  st.mcqLogs.push({correct:c,total:t,type,subject:sc?sc.subject:'General',date:new Date().toLocaleDateString('en-IN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})});
+  saveState(st);renderMcq();updateStats();document.getElementById('mcqCorrect').value='';
+}
+
+function renderCalendar(){
+  const sched=getSchedule();const td=getToday();
+  let h=`<div style="margin-bottom:12px"><button class="btn btn-outline" onclick="openAddDayModal()">+ Add New Day</button></div>`;
+  sched.forEach((sc,idx)=>{
+    const isToday=sc.date===td;const isPast=sc.date<td;const done=getDayStatus(sc.date);const st=getState();
+    h+=`<div class="cal-day ${isToday?'today-cal':''} ${isPast?'past':''}" id="cal-${idx}">
+      <div class="cal-day-header" onclick="document.getElementById('cal-${idx}').classList.toggle('expanded')">
+        <div><div class="cal-day-num">Day ${sc.day} — ${sc.subject}</div><div class="cal-day-date">${formatDate(sc.date)}</div></div>
+        <div class="cal-subject-badge" style="background:${sc.color}15;color:${sc.color}">${done}/4</div>
+      </div>
+      <div class="cal-progress">${sc.blocks.map((_,i)=>{const bk=st[`blocks_${sc.date}`]||{};return`<div class="cal-block-dot ${bk[i]?'done-dot':''}"></div>`}).join('')}</div>
+      <div class="cal-day-detail">
+        ${sc.blocks.map(b=>`<div><strong>${b.name}:</strong> ${b.label}<br>${b.tasks.join('. ')}.</div><br>`).join('')}
+        <div class="cal-actions">
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openEditDayModal(${idx})">Edit</button>
+          <button class="btn btn-sm" style="background:var(--warm-light);color:var(--warm-deep);border:1px solid var(--warm)" onclick="event.stopPropagation();duplicateDay(${idx})">Duplicate</button>
+          ${sched.length>1?`<button class="btn btn-sm" style="background:var(--red-light);color:var(--red);border:1px solid var(--red)" onclick="event.stopPropagation();deleteDay(${idx})">Delete</button>`:''}
+          ${idx>0?`<button class="btn btn-sm" style="background:var(--accent-light);color:var(--accent);border:1px solid var(--accent)" onclick="event.stopPropagation();moveDay(${idx},-1)">Move Up</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  });
+  h+=`<div style="margin-top:16px"><button class="btn btn-sm" style="background:var(--red-light);color:var(--red);border:1px solid var(--red);width:100%" onclick="resetSchedule()">Reset to Default Schedule</button></div>`;
+  document.getElementById('tab-calendar').innerHTML=h;
+}
+
+function openEditDayModal(idx){
+  const sched=getSchedule();const sc=sched[idx];
+  let taskHtml='';
+  sc.blocks.forEach((block,bi)=>{
+    taskHtml+=`<div style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:0.82rem;color:var(--text)">${block.name}</div>`;
+    taskHtml+=`<div class="modal-form-group"><label>Label</label><input class="input-field" id="editBlockLabel-${bi}" value="${block.label}"></div>`;
+    taskHtml+=`<div class="modal-form-group"><label>Time</label><input class="input-field" id="editBlockTime-${bi}" value="${block.time}"></div>`;
+    taskHtml+=`<div id="editTasks-${bi}">`;
+    block.tasks.forEach((t,ti)=>{taskHtml+=`<div class="task-edit-row"><input class="input-field" value="${t}" id="editTask-${bi}-${ti}"><button class="task-remove-btn" onclick="this.parentElement.remove()">×</button></div>`});
+    taskHtml+=`</div><button class="add-task-btn" onclick="addTaskField(${bi})">+ Add task</button>`;
+  });
+  const colorDots=COLORS.map(c=>`<div class="color-dot ${c===sc.color?'selected':''}" style="background:${c}" onclick="document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));this.classList.add('selected');this.dataset.color='${c}'" data-color="${c}"></div>`).join('');
+  openModal(`<div class="modal-title">Edit Day ${sc.day}</div>
+    <div class="modal-form-group"><label>Subject Name</label><input class="input-field" id="editSubject" value="${sc.subject}"></div>
+    <div class="modal-form-group"><label>Date</label><input type="date" class="input-field" id="editDate" value="${sc.date}"></div>
+    <div class="modal-form-group"><label>Color</label><div class="color-picker">${colorDots}</div></div>
+    ${taskHtml}
+    <div class="modal-btns"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveEditDay(${idx})">Save</button></div>`);
+}
+function addTaskField(bi){const c=document.getElementById(`editTasks-${bi}`);const n=c.children.length;const d=document.createElement('div');d.className='task-edit-row';d.innerHTML=`<input class="input-field" id="editTask-${bi}-${n}" placeholder="New task"><button class="task-remove-btn" onclick="this.parentElement.remove()">×</button>`;c.appendChild(d)}
+function saveEditDay(idx){
+  const sched=getSchedule();const sc=sched[idx];
+  sc.subject=document.getElementById('editSubject').value.trim()||sc.subject;
+  sc.date=document.getElementById('editDate').value||sc.date;
+  const selC=document.querySelector('.color-dot.selected');if(selC)sc.color=selC.dataset.color;
+  sc.blocks.forEach((block,bi)=>{
+    const lEl=document.getElementById(`editBlockLabel-${bi}`);const tEl=document.getElementById(`editBlockTime-${bi}`);
+    if(lEl)block.label=lEl.value.trim()||block.label;if(tEl)block.time=tEl.value.trim()||block.time;
+    const tc=document.getElementById(`editTasks-${bi}`);
+    if(tc){block.tasks=Array.from(tc.querySelectorAll('input')).map(inp=>inp.value.trim()).filter(v=>v)}
+  });
+  saveSchedule(sched);closeModal();renderCalendar();updateHeader();updateStats();
+}
+function openAddDayModal(){
+  const sched=getSchedule();const last=sched.length>0?sched[sched.length-1].date:getToday();
+  const nd=new Date(last+'T00:00:00');nd.setDate(nd.getDate()+1);
+  const nds=`${nd.getFullYear()}-${String(nd.getMonth()+1).padStart(2,'0')}-${String(nd.getDate()).padStart(2,'0')}`;
+  const colorDots=COLORS.map((c,i)=>`<div class="color-dot ${i===0?'selected':''}" style="background:${c}" onclick="document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));this.classList.add('selected');this.dataset.color='${c}'" data-color="${c}"></div>`).join('');
+  openModal(`<div class="modal-title">Add New Day</div>
+    <div class="modal-form-group"><label>Subject Name</label><input class="input-field" id="newSubject" placeholder="e.g. OBG Part 2"></div>
+    <div class="modal-form-group"><label>Date</label><input type="date" class="input-field" id="newDate" value="${nds}"></div>
+    <div class="modal-form-group"><label>Color</label><div class="color-picker">${colorDots}</div></div>
+    <p style="font-size:0.78rem;color:var(--text-secondary);margin:12px 0">Default 4 blocks will be created. Edit tasks after adding.</p>
+    <div class="modal-btns"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveNewDay()">Add Day</button></div>`);
+}
+function saveNewDay(){
+  const subject=document.getElementById('newSubject').value.trim();if(!subject){alert('Subject name required');return}
+  const date=document.getElementById('newDate').value;const selC=document.querySelector('.color-dot.selected');const color=selC?selC.dataset.color:COLORS[0];
+  const sched=getSchedule();
+  sched.push({day:sched.length+1,date,subject,color,blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning Clinic — Core Revision',tasks:['Add your revision topics here']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:[`50 ${subject} MCQs (timed, 75 min)`,'50 mixed-subject MCQs','Review wrong answers']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening Clinic — Weak Areas',tasks:['Add weak area topics here']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview next subject']}]});
+  saveSchedule(sched);closeModal();renderCalendar();updateHeader();updateStats();
+}
+function duplicateDay(idx){const sched=getSchedule();const copy=JSON.parse(JSON.stringify(sched[idx]));const d=new Date(copy.date+'T00:00:00');d.setDate(d.getDate()+1);copy.date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;copy.subject=copy.subject+' (contd.)';sched.splice(idx+1,0,copy);saveSchedule(sched);renderCalendar();updateHeader();updateStats()}
+function deleteDay(idx){if(!confirm('Delete this day?'))return;const sched=getSchedule();sched.splice(idx,1);saveSchedule(sched);renderCalendar();updateHeader();updateStats()}
+function moveDay(idx,dir){const sched=getSchedule();const ni=idx+dir;if(ni<0||ni>=sched.length)return;[sched[idx],sched[ni]]=[sched[ni],sched[idx]];saveSchedule(sched);renderCalendar()}
+function resetSchedule(){if(!confirm('Reset to original 8-day schedule?'))return;const st=getState();st.schedule=JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));saveState(st);renderCalendar();updateHeader();updateStats()}
+
+function renderNotes(){
+  const st=getState();const notes=st.wrongNotes||[];const sched=getSchedule();const sc=sched.find(s=>s.date===getToday());const subj=sc?sc.subject:'General';
+  let h=`<div class="mcq-section">
+    <div class="mcq-section-title">Wrong Answer Log</div>
+    <div class="input-row"><div class="input-group"><div class="input-label">Subject</div><input type="text" class="input-field" id="noteSubject" value="${subj}"></div></div>
+    <div class="input-group" style="margin-bottom:10px"><div class="input-label">One-liner correction</div><textarea class="input-field" id="noteText" placeholder="e.g. Gaucher = Glucocerebrosidase deficiency, not Sphingomyelinase"></textarea></div>
+    <button class="btn btn-primary" onclick="saveNote()">Add Note</button>
+  </div>`;
+  if(notes.length>0){h+=`<div class="section-title">${notes.length} Notes</div>`;notes.slice().reverse().forEach((n,i)=>{const ri=notes.length-1-i;h+=`<div class="wrong-entry"><div class="wrong-text">${n.text}</div><div style="text-align:right"><div class="wrong-subj">${n.subject}</div><button class="wrong-delete" onclick="deleteNote(${ri})">×</button></div></div>`})}
+  else{h+=`<div class="empty-state">No wrong answers logged yet.</div>`}
+  document.getElementById('tab-notes').innerHTML=h;
+}
+function saveNote(){const subj=document.getElementById('noteSubject').value.trim();const text=document.getElementById('noteText').value.trim();if(!text)return;const st=getState();if(!st.wrongNotes)st.wrongNotes=[];st.wrongNotes.push({subject:subj,text,date:getToday()});saveState(st);renderNotes()}
+function deleteNote(i){const st=getState();if(st.wrongNotes){st.wrongNotes.splice(i,1);saveState(st);renderNotes()}}
+
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+    const tn=tab.dataset.tab;
+    if(tn==='today')renderToday();else if(tn==='mcq')renderMcq();else if(tn==='calendar')renderCalendar();else if(tn==='notes')renderNotes();
+  });
+});
+
+// Auto-refresh current block indicator every minute
+setInterval(()=>{const activeTab=document.querySelector('.nav-tab.active');if(activeTab&&activeTab.dataset.tab==='today')renderToday()},60000);
+
+updateHeader();updateStats();renderToday();updateNotifUI();
+
+// Generate app icon dynamically for iOS home screen
+(function(){
+  const c=document.createElement('canvas');c.width=180;c.height=180;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#1B4332';ctx.beginPath();ctx.roundRect(0,0,180,180,36);ctx.fill();
+  const g=ctx.createRadialGradient(54,54,0,90,90,126);
+  g.addColorStop(0,'rgba(45,106,79,0.4)');g.addColorStop(1,'rgba(27,67,50,0)');
+  ctx.fillStyle=g;ctx.fill();
+  ctx.fillStyle='#FFFFFF';ctx.font='bold 42px Georgia,serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('NEET',90,72);
+  ctx.fillStyle='#D4A373';ctx.font='bold 30px Georgia,serif';ctx.fillText('PG',90,118);
+  ctx.fillStyle='#D4A373';ctx.fillRect(54,148,72,4);
+  const link=document.createElement('link');link.rel='apple-touch-icon';link.href=c.toDataURL('image/png');
+  document.head.appendChild(link);
+})();
+</script>
+</body>
+</html>
