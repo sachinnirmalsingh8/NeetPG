@@ -211,155 +211,53 @@ textarea.input-field{min-height:56px;resize:vertical}
 <script>
 const APP_VERSION='3.0';
 const DEFAULT_SCHEDULE=[
-  {day:1,date:'2026-06-02',subject:'Anatomy',color:'#1B4332',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Embryology & Limbs',tasks:['Germ layers, derivatives of ectoderm/mesoderm/endoderm','Development of heart, GIT, urogenital system, diaphragm','Upper limb — brachial plexus, hand anatomy, blood supply','Lower limb — femur, thigh compartments, foot & ankle nerves']},
+  {day:1,date:'2026-06-01',subject:'Anatomy',color:'#1B4332',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Embryology & Limbs',tasks:['Germ layers — ectoderm, mesoderm, endoderm derivatives','Development of heart, GIT, urogenital system, diaphragm','Upper limb — brachial plexus, hand anatomy, blood supply','Lower limb — femur, thigh compartments, foot & ankle nerves']},
     {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['2:00–3:15 → 50 Anatomy MCQs (timed)','3:30–4:45 → 50 mixed-subject MCQs','4:45–5:45 → Review wrong answers']},
     {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Neuro & Head-Neck',tasks:['Cranial nerve nuclei, columns, dura mater','Brainstem tracts, syndromes (Brown-Séquard, Weber, Wallenberg)','Cortex, cerebellum, peduncles, cerebral blood supply','Neck — cervical fascia, constrictors, triangles, salivary glands']},
     {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers, cross-sectional anatomy images','Preview Physiology']}
   ]},
-  {day:2,date:'2026-06-03',subject:'Physiology',color:'#5A4B8A',blocks:[
+  {day:2,date:'2026-06-02',subject:'Physiology',color:'#5A4B8A',blocks:[
     {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Cell, Muscle & Neuro',tasks:['Cell Physiology — membrane, organelles, junctions, transport, RMP','Muscle Physiology — NMJ, excitation-contraction coupling, muscle types','Neurophysiology — pain pathways, tracts (DCML, spinothalamic)','Basal ganglia, cerebellum, sleep, EEG waves']},
     {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Physiology MCQs (timed)','50 mixed-subject MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — CVS, Resp & Renal',tasks:['CVS — cardiac cycle, action potentials, ECG, cardiac output, JVP','Respiratory — surfactant, lung volumes, O₂ dissociation curve, V/Q','Renal — GFR, countercurrent, acid-base, ADH, aldosterone','Blood — hematopoiesis, coagulation cascade, blood groups']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['GIT, Endocrine, Reproductive physiology rapid review','Exercise physiology, temperature regulation','Preview Biochemistry']}
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — CVS, Resp & Renal',tasks:['CVS — cardiac cycle, action potentials, ECG, cardiac output, JVP','Respiratory — surfactant, lung volumes, O₂ dissociation curve, V/Q','Renal — GFR, countercurrent, acid-base, ADH, aldosterone','GIT — secretions, motility, bile acids, iron absorption']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Endocrine, Reproductive, Exercise physiology rapid review','Preview Biochemistry']}
   ]},
-  {day:3,date:'2026-06-04',subject:'Biochemistry',color:'#8A6B3D',blocks:[
+  {day:3,date:'2026-06-03',subject:'Biochemistry',color:'#8A6B3D',blocks:[
     {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Enzymes & Carbohydrates',tasks:['Enzymology — classification, kinetics, enzyme markers','Carbohydrate metabolism Part 1 — glycolysis, TCA cycle, ETC','Carbohydrate metabolism Part 2 — HMP shunt, gluconeogenesis','Rate-limiting enzymes, glycogen storage diseases']},
     {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Biochemistry MCQs','50 mixed MCQs','Wrong answer review']},
     {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Amino Acids, Lipids & Mol Bio',tasks:['Amino acid metabolism — PKU, homocystinuria, maple syrup urine disease','Lipid metabolism — beta-oxidation, ketogenesis, lipoproteins','Molecular biology — DNA replication, transcription, PCR, blotting','Vitamins & minerals — deficiency syndromes, coenzymes']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Storage disorders table, porphyrias','Preview Pathology']}
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Storage disorders table, porphyrias','Preview Psychiatry']}
   ]},
-  {day:4,date:'2026-06-05',subject:'Pathology (Part 1)',color:'#9B2335',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — General Pathology',tasks:['Cell adaptations, cell injury, necrosis, apoptosis','Inflammation — acute, chronic, granulomatous','Wound healing, repair mechanisms','Neoplasia — carcinogenesis, tumor markers, grading/staging']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Pathology MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Hematology',tasks:['WBC disorders — leukemias (ALL, AML, CLL, CML)','Lymphomas — Hodgkin, Non-Hodgkin, Burkitt','RBC disorders — anemias (iron deficiency, megaloblastic, hemolytic)','Hemostasis, blood banking, peripheral smear, indices']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Pathology Part 2']}
-  ]},
-  {day:5,date:'2026-06-06',subject:'Pathology (Part 2)',color:'#9B2335',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Systemic Pathology',tasks:['Genetics — autosomal, X-linked inheritance, karyotype disorders','Blood vessels & heart — atherosclerosis, vasculitis, cardiac tumors','Respiratory — pneumonia, TB, bronchogenic carcinoma, asthma, COPD','GI — peptic ulcer, IBD, polyps, colorectal carcinoma']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Pathology MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Renal, Liver & Endocrine',tasks:['Kidney — glomerulonephritis, nephrotic/nephritic, renal biopsy','Liver — hepatitis, cirrhosis, liver tumors','Thyroid — Warthin tumor, thyroid malignancies','Soft tissue & bone tumors, musculoskeletal pathology']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Microbiology']}
-  ]},
-  {day:6,date:'2026-06-07',subject:'Microbiology',color:'#4A7B6F',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — General & Bacteriology',tasks:['General micro — culture media, staining, sterilization, susceptibility tests','Bacteriology — Gram +ve cocci, Gram -ve bacilli','Mycobacteria — TB, leprosy, atypical mycobacteria','Mycology — superficial, subcutaneous, systemic mycosis']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Microbiology MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Virology, Parasitology & Systems',tasks:['Virology — HIV, hepatitis viruses, herpes, dengue, COVID','Parasitology — malaria, kala-azar, filaria, helminths','CNS infections — meningitis, encephalitis','Immunology — innate, adaptive, hypersensitivity, autoimmunity']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Infection control, zoonotic diseases, toxin-related diseases','Preview Pharmacology']}
-  ]},
-  {day:7,date:'2026-06-08',subject:'Pharmacology',color:'#2E4057',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — General & ANS Pharmacology',tasks:['Pharmacokinetics — absorption, distribution, metabolism, excretion','Pharmacodynamics — dose-response, drug interactions, therapeutic index','ANS drugs — cholinergic, anticholinergic, adrenergic, antiadrenergic','CVS drugs — antihypertensives, heart failure, antiarrhythmics']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Pharmacology MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Antimicrobials & Endocrine',tasks:['Antimicrobials Part 1 — cell wall inhibitors, protein synthesis inhibitors','Antimicrobials Part 2 — antifungals, antivirals, antimalarials, anti-TB','Endocrine drugs — insulin, thyroid, steroids, contraceptives, osteoporosis','CNS drugs — analgesics, antiepileptics, antipsychotics, antidepressants']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Anticancer drugs, immunosuppressants, GIT/respiratory drugs','Preview for Grand Test']}
-  ]},
-  {day:8,date:'2026-06-09',subject:'Grand Test 1 (Pre-clinical)',color:'#3A6EA5',blocks:[
-    {name:'Block A',time:'8:30 AM – 12:30 PM',label:'Morning — GRAND TEST',tasks:['200 MCQs, 3.5 hrs, strict exam conditions','Anatomy + Physiology + Biochemistry + Pathology + Micro + Pharma','No phone. Simulate real exam.']},
-    {name:'Block B',time:'1:30 – 5:00 PM',label:'Afternoon — GT Answer Review',tasks:['Review every wrong answer systematically','Note down recurring weak topics','Cross-reference with Marrow revision notes']},
-    {name:'Block C',time:'5:30 – 9:30 PM',label:'Evening — Weak Area Deep Dive',tasks:['Revisit 2-3 weakest pre-clinical subjects','Focus on image-based and clinical correlation questions']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['List top 10 facts I keep forgetting','Preview Medicine']}
-  ]},
-  {day:9,date:'2026-06-10',subject:'Medicine (Part 1)',color:'#BC4749',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Endocrine & Diabetes',tasks:['Pituitary disorders — acromegaly, hypopituitarism, pituitary adenomas','Adrenal cortex — Cushing, Conn, Addison, CAH','Adrenal medulla — pheochromocytoma, MEN syndromes','Diabetes mellitus — DKA, HHS, insulin therapy, MODY, GDM']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Medicine MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Thyroid & Cardiology',tasks:['Thyroid disorders — Graves, Hashimoto, thyroid storm, myxedema','Heart failure — systolic vs diastolic, cardiomyopathies','Constrictive pericarditis vs restrictive cardiomyopathy vs tamponade','Pulses, JVP, heart sounds — murmurs, added sounds']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Medicine Part 2']}
-  ]},
-  {day:10,date:'2026-06-11',subject:'Medicine (Part 2)',color:'#BC4749',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Cardiology & GI',tasks:['Valvular heart diseases — MS, MR, AS, AR findings','ECG interpretation, arrhythmias','GI — UC vs Crohn disease, celiac, tropical sprue','Liver — hepatitis (A-E), cirrhosis, liver failure, Wilson disease']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Medicine MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Nephrology & Rheumatology',tasks:['Nephrology — glomerulonephritis, nephrotic/nephritic, dialysis','Rheumatology — RA, SLE, vasculitis, spondyloarthropathies','Neurology — stroke, epilepsy, GBS, myasthenia gravis','Hematology clinical — DIC, TTP-HUS, myeloma']},
+  {day:4,date:'2026-06-04',subject:'Psychiatry',color:'#6C567B',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Psychosis & Mood Disorders',tasks:['Schizophrenia — Schneider first-rank symptoms, subtypes, management','Delusional disorder, brief psychotic disorder, schizoaffective','Mood disorders — major depression, bipolar disorder, cyclothymia','Pharmacotherapy — antipsychotics, lithium, antidepressants, ECT']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Psychiatry MCQs','50 mixed MCQs','Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Anxiety, Sleep & Substance Use',tasks:['Anxiety disorders — GAD, panic, phobias, OCD, PTSD','Dissociative & conversion disorders, somatoform disorders','Sleep disorders — insomnia, narcolepsy, parasomnias, EEG waves','Substance use disorders — alcohol, opioids, cannabis','Child psychiatry, MHA 2017, neurodevelopmental disorders']},
     {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Surgery']}
   ]},
-  {day:11,date:'2026-06-12',subject:'Surgery (Part 1)',color:'#8B5E3C',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — General & Breast Surgery',tasks:['Surgical care — safety, zones, instruments, sutures, knots, anastomosis','Shock — classification, hemorrhagic, septic, management','Surgical nutrition — enteral, parenteral, TPN','Breast — cancer staging, BIRADS, surgical management, conditions']},
+  {day:5,date:'2026-06-05',subject:'Surgery',color:'#BC4749',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — General & GI Surgery',tasks:['Surgical care — safety, instruments, sutures, knots, anastomosis','Shock — classification, hemorrhagic, septic shock management','Breast — cancer staging, BIRADS, surgical management, nipple discharge','Esophagus — cancer, achalasia, GERD, Zenker diverticulum']},
     {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Surgery MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Thyroid & Upper GI',tasks:['Thyroid — cancers, investigations, FNAC, Bethesda, surgical anatomy','Salivary glands — tumors (pleomorphic, Warthin), stones','Esophagus — cancer, achalasia, GERD, diverticulum','Stomach — peptic ulcer, cancer, GIST, volvulus']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Surgery Part 2']}
-  ]},
-  {day:12,date:'2026-06-13',subject:'Surgery (Part 2)',color:'#8B5E3C',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Hepatobiliary & Lower GI',tasks:['Liver — liver cyst, abscess, portal hypertension, hemorrhage','Intestinal obstruction, mesenteric ischemia, Meckel diverticulum','Appendix — acute appendicitis, appendicular mass/abscess','Colon — colorectal cancer, IBD surgery, polyps, pilonidal sinus']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Surgery MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Hernias, Urology & Trauma',tasks:['Hernias — inguinal (direct/indirect), femoral, incisional','Colostomy, ileostomy, short bowel syndrome','Minimally invasive surgery — laparoscopic principles','Trauma — ATLS protocol, burns management']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Hepatobiliary, Colon & Hernias',tasks:['Stomach — peptic ulcer, cancer, GIST, volvulus','Liver — abscess, portal hypertension, intestinal obstruction','Appendicitis, colorectal cancer, IBD surgery, polyps','Thyroid — cancers, FNAC, Bethesda, salivary gland tumors','Hernias — inguinal, femoral; minimally invasive surgery']},
     {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview OBG']}
   ]},
-  {day:13,date:'2026-06-14',subject:'Obstetrics & Gynaecology',color:'#D4A373',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Gynaecology',tasks:['Anatomy of uterus, cervix, vagina, fallopian tubes','Menstrual cycle, AUB, perimenopausal bleeding','PCOS, ovarian hyperstimulation, POI, SERMs, amenorrhea','DSD (disorders of sexual development), CAH']},
+  {day:6,date:'2026-06-06',subject:'OBG',color:'#D4A373',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Gynaecology',tasks:['Anatomy of uterus, cervix, vagina, fallopian tubes','Menstrual cycle, AUB, perimenopausal & postmenopausal bleeding','PCOS, ovarian hyperstimulation, POI, SERMs, amenorrhea','Fibroid vs polyp vs adenomyosis vs endometriosis']},
     {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 OBG MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Obstetrics & Cervix',tasks:['Fibroid vs polyp vs adenomyosis vs endometriosis','Cervical cancer — screening, staging, management','Ovarian cancer — tumor markers, risk factors, management','Infertility — male/female causes, IVF, ART']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Contraception — OC pills, IUD, barrier, sterilization','Antenatal care, high-risk pregnancy, labor stages, PPH','Preview Grand Test']}
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Obstetrics & Oncology',tasks:['Cervical cancer — screening, staging, management','Ovarian cancer — tumor markers, risk factors, management','Infertility — male/female causes, IVF, ART','Antenatal care, high-risk pregnancy, labor, PPH','Contraception — OC pills, IUD, barrier, sterilization']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview SPM, prepare for Grand Test']}
   ]},
-  {day:14,date:'2026-06-15',subject:'Grand Test 2 (Clinical)',color:'#3A6EA5',blocks:[
-    {name:'Block A',time:'8:30 AM – 12:30 PM',label:'Morning — GRAND TEST',tasks:['200 MCQs, 3.5 hrs, strict exam conditions','Medicine + Surgery + OBG + Paediatrics','No phone. Simulate real exam.']},
-    {name:'Block B',time:'1:30 – 5:00 PM',label:'Afternoon — GT Answer Review',tasks:['Review every wrong answer','Note recurring weak topics','Cross-reference with Marrow revision notes']},
-    {name:'Block C',time:'5:30 – 9:30 PM',label:'Evening — Weak Area Deep Dive',tasks:['Revisit 2-3 weakest clinical subjects','Image-based & clinical scenario practice']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['List weakest subjects for buffer day','Preview Paediatrics']}
+  {day:7,date:'2026-06-07',subject:'SPM + Grand Test',color:'#3A6EA5',blocks:[
+    {name:'Block A',time:'8:30 AM – 12:30 PM',label:'Morning — SPM Rapid Revision',tasks:['Biostatistics — sensitivity, specificity, PPV, NPV, study designs','National health programs — malaria, TB (NTEP), leprosy, blindness','Immunization — Mission Indradhanush, cold chain, vaccine schedule','Epidemiology — disease transmission, incidence, prevalence, carriers','Nutrition, environmental health, communicable diseases']},
+    {name:'Block B',time:'1:30 – 5:00 PM',label:'Afternoon — GRAND TEST',tasks:['200 MCQs, 3.5 hrs, strict time','No phone. Simulate exam.']},
+    {name:'Block C',time:'5:30 – 9:30 PM',label:'Evening — GT Answer Review',tasks:['Review every wrong answer','Tag weak subjects']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['List weakest 2-3 subjects']}
   ]},
-  {day:15,date:'2026-06-16',subject:'Paediatrics',color:'#6C567B',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Neonatology & Growth',tasks:['Neonatology Part 1 — newborn exam, abnormalities, hypoglycemia, APGAR','Neonatology Part 2 — neonatal resuscitation, seizures, sepsis','Neonatal jaundice — physiological, pathological, kernicterus','Growth & development — charts, milestones (motor, social, language)']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Paediatrics MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Systems & Genetics',tasks:['Nutrition — breastfeeding, marasmus, kwashiorkor, vitamins','Genetics — Down, Turner, Klinefelter, IEM (PKU, galactosemia)','Cardiology — congenital heart diseases, rheumatic fever','Pulmonology, GI, Neurology, Nephrology, Endocrinology overview']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Ophthalmology']}
-  ]},
-  {day:16,date:'2026-06-17',subject:'Ophthalmology',color:'#4A7B6F',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Anatomy, Cornea & Lens',tasks:['Anatomy of eye — orbit, layers, local anaesthesia, drug routes','Cornea & sclera — corneal ulcer, dystrophies, investigations','Lens — types of cataract (senile, traumatic, congenital)','Cataract surgery — techniques, IOL, complications']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Ophthalmology MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Glaucoma, Retina & Neuro',tasks:['Glaucoma — open angle, angle closure, management','Uveitis — anterior, posterior, classification','Retina — diabetic retinopathy, ARMD, detachment','Neuro-ophthalmology — pupillary pathway, optic neuritis, papilledema','Squint — types, deviation, gaze palsies']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Refraction, eyelid pathologies, conjunctivitis','Preview ENT']}
-  ]},
-  {day:17,date:'2026-06-18',subject:'ENT',color:'#8B5E3C',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Ear',tasks:['Anatomy — inner ear, middle ear walls, cochlea, semicircular canals','Hearing — tuning fork tests, audiometry (PTA, BERA, OAE)','Otitis media — acute, chronic (mucosal, squamous), complications','CSOM, cholesteatoma, myringoplasty, mastoidectomy']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 ENT MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Nose, Throat & Tumors',tasks:['Vertigo — BPPV, vestibular neuritis, Meniere disease','Nose — anatomy, rhinitis, sinusitis, epistaxis, CSF rhinorrhea','Nasal polyps, inverted papilloma, tumors of nose & PNS','Throat — larynx, pharynx, tonsils, vocal cord lesions','Acoustic neuroma, glomus tumor, neck masses']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Orthopaedics']}
-  ]},
-  {day:18,date:'2026-06-19',subject:'Orthopaedics',color:'#6B6358',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Fractures & Limb Trauma',tasks:['General — bone healing, displacement, non-union, avascular necrosis','Upper limb — shoulder dislocation, humerus fractures, supracondylar','Colles/Smith fracture, hand injuries, elbow dislocation','Lower limb — hip dislocation, femur fractures, knee injuries, ankle']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Orthopaedics MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Bone Disorders & Spine',tasks:['Metabolic bone — osteoporosis, rickets/osteomalacia, Paget disease','Bone tumors — osteosarcoma, Ewing, giant cell tumor, osteochondroma','Nerve injuries — radial, ulnar, median, brachial plexus','Spine — IVDP, spinal canal stenosis, spondylolisthesis, TB spine','Joint disorders — RA, OA, gout, ankylosing spondylitis']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Paediatric ortho — DDH, CTEV, SCFE, Perthes','Preview Dermatology']}
-  ]},
-  {day:19,date:'2026-06-20',subject:'Dermatology',color:'#D4A373',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Basics & Papulosquamous',tasks:['Skin anatomy — layers, terminology, investigations, phototherapy','Sweat gland & sebaceous gland disorders, acne vulgaris, rosacea','Pigmentation disorders — hyper/hypopigmentation, vitiligo, melasma','Psoriasis, lichen planus, pityriasis rosea, pityriasis rubra pilaris']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Dermatology MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Infections & Immunology',tasks:['Blistering disorders — pemphigus, pemphigoid, dermatitis herpetiformis','Bacterial skin — TB, leprosy, mycobacterial infections','Viral — herpes, HPV, molluscum, viral exanthems','Fungal — dermatophytosis, candidiasis, subcutaneous mycosis','STIs, drug reactions, skin tumors, connective tissue diseases']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers, clinical images','Preview Community Medicine']}
-  ]},
-  {day:20,date:'2026-06-21',subject:'Community Medicine',color:'#3A6EA5',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Biostatistics & Epidemiology',tasks:['Biostatistics — variables, mean/median/mode, standard deviation','Sensitivity, specificity, PPV, NPV, likelihood ratios','Study designs — cohort, case-control, RCT, cross-sectional','Epidemiology — disease transmission, incidence, prevalence, carriers']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Community Medicine MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — National Programs & Nutrition',tasks:['National health programs — malaria, TB (NTEP), leprosy, blindness','Immunization — Mission Indradhanush, cold chain, vaccine schedule','Family welfare — contraception methods, indicators, NFHS','Nutrition — PEM, vitamins, food hygiene, ICDS','Environmental health, occupational health, health legislation']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Communicable diseases — measles, chickenpox, dengue, rabies','Screening tests, evidence-based medicine levels','Preview Grand Test']}
-  ]},
-  {day:21,date:'2026-06-22',subject:'Grand Test 3 (Short Subjects)',color:'#3A6EA5',blocks:[
-    {name:'Block A',time:'8:30 AM – 12:30 PM',label:'Morning — GRAND TEST',tasks:['200 MCQs, 3.5 hrs, strict exam conditions','Ophthal + ENT + Ortho + Derma + SPM + Paediatrics','No phone. Simulate real exam.']},
-    {name:'Block B',time:'1:30 – 5:00 PM',label:'Afternoon — GT Answer Review',tasks:['Review every wrong answer','Note recurring weak topics','Cross-reference with Marrow revision notes']},
-    {name:'Block C',time:'5:30 – 9:30 PM',label:'Evening — Weak Area Deep Dive',tasks:['Revisit 2-3 weakest short subjects','Image-based practice for Derma, Ophthal, Radiology']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['List remaining weak areas','Preview Forensic Medicine']}
-  ]},
-  {day:22,date:'2026-06-23',subject:'Forensic Medicine',color:'#6B6358',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Wounds & Ballistics',tasks:['Wounds — incised, stab, lacerated, defence injuries','Firearm injuries — ballistics, ranges, bullet wounds on skull','Thermal injuries — burns, scalds, lightning','Asphyxia — types, hanging, drowning, strangulation']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Forensic Medicine MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Jurisprudence & Toxicology',tasks:['Jurisprudence — consent, witness, ethics, negligence, malpractice','Thanatology — postmortem changes, rigor mortis, livor mortis','Toxicology — corrosive poisons, irritants, snake venom','Organophosphorus, cyanide, alcohol, carbon monoxide poisoning','Sexual offences, child abuse, sample collection']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Psychiatry']}
-  ]},
-  {day:23,date:'2026-06-24',subject:'Psychiatry',color:'#6C567B',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Psychosis & Mood',tasks:['Schizophrenia — Schneider first-rank symptoms, subtypes, management','Delusional disorder, brief psychotic disorder','Mood disorders — major depression, bipolar disorder, cyclothymia','Pharmacotherapy — antipsychotics, lithium, antidepressants, ECT']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Psychiatry MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Anxiety, Sleep & Substance',tasks:['Anxiety disorders — GAD, panic, phobias, OCD, PTSD','Dissociative & conversion disorders, somatoform disorders','Sleep disorders — insomnia, narcolepsy, parasomnias, EEG waves','Substance use disorders — alcohol, opioids, cannabis','Child psychiatry, MHA 2017, neurodevelopmental disorders']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview Anaesthesia & Radiology']}
-  ]},
-  {day:24,date:'2026-06-25',subject:'Anaesthesia',color:'#2E4057',blocks:[
-    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Anaesthesia Complete',tasks:['Pre-anaesthetic checkup — ASA grading, airway assessment, medications','General anaesthesia — monitoring, inhalational agents (MAC), IV agents','Muscle relaxants — depolarizing vs non-depolarizing, reversal','Local anaesthetics — mechanism, toxicity, types of blocks']},
-    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 Anaesthesia MCQs','50 mixed MCQs','Wrong answer review']},
-    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Radiology & Critical Care',tasks:['Radiology — X-ray physics, CT, MRI, USG, contrast agents','Nuclear medicine — PET, thyroid scan, bone scan','Anaesthesia machines — circuits (Mapleson), closed/semi-closed','Airway management — ET tubes, LMA, difficult airway','ACLS — BLS, cardiac arrest algorithms, post-resuscitation care']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Consolidation',tasks:['Review wrong answers','Preview for Final Grand Test']}
-  ]},
-  {day:25,date:'2026-06-26',subject:'Final Grand Test + Revision',color:'#9B2335',blocks:[
-    {name:'Block A',time:'8:30 AM – 12:30 PM',label:'Morning — FINAL GRAND TEST',tasks:['200 MCQs, 3.5 hrs, all 19 subjects','Full exam simulation — strict timing','No phone, no breaks beyond scheduled']},
-    {name:'Block B',time:'1:30 – 5:00 PM',label:'Afternoon — GT Answer Review',tasks:['Review every wrong answer','Calculate subject-wise accuracy','Identify final weak spots']},
-    {name:'Block C',time:'5:30 – 9:30 PM',label:'Evening — Final Weak Area Blitz',tasks:['Top 3 weakest subjects — targeted revision','High-yield tables: normal values, staging, grading','Image-based questions: Derma, Radiology, Pathology slides']},
-    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Final Consolidation',tasks:['Top 20 facts I keep forgetting','Confidence check — ready for exam']}
+  {day:8,date:'2026-06-08',subject:'Buffer Day',color:'#6B6358',blocks:[
+    {name:'Block A',time:'9:30 AM – 1:00 PM',label:'Morning — Weakest Subject #1',tasks:['Targeted revision of GT mistakes']},
+    {name:'Block B',time:'2:00 – 5:45 PM',label:'Afternoon — MCQ + Active Recall',tasks:['50 weak subject MCQs','50 mixed MCQs','Wrong answer review']},
+    {name:'Block C',time:'6:00 – 9:30 PM',label:'Evening — Weak Subjects #2-3',tasks:['Second & third weakest','Image-heavy practice']},
+    {name:'Block D',time:'10:30 PM – 12:00 AM',label:'Night — Final Consolidation',tasks:['Top 10 facts I keep forgetting']}
   ]}
 ];
 const COLORS=['#1B4332','#5A4B8A','#8A6B3D','#6C567B','#BC4749','#D4A373','#3A6EA5','#6B6358','#4A7B6F','#8B5E3C','#9B2335','#2E4057'];
@@ -367,8 +265,8 @@ const BLOCK_ICONS=['A','B','C','D'];
 const BLOCK_COLORS=['#1B4332','#D4A373','#6C567B','#3A6EA5'];
 const TIMER_PRESETS=[30,45,60,75,90];
 
-function getState(){try{return JSON.parse(localStorage.getItem('neetpg_v5')||'{}')}catch{return {}}}
-function saveState(s){localStorage.setItem('neetpg_v5',JSON.stringify(s))}
+function getState(){try{return JSON.parse(localStorage.getItem('neetpg_v4')||'{}')}catch{return {}}}
+function saveState(s){localStorage.setItem('neetpg_v4',JSON.stringify(s))}
 function getSchedule(){const s=getState();return(s.schedule&&s.schedule.length>0)?s.schedule:JSON.parse(JSON.stringify(DEFAULT_SCHEDULE))}
 function saveSchedule(sched){const s=getState();sched.forEach((item,i)=>{item.day=i+1});s.schedule=sched;saveState(s)}
 function getToday(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`}
